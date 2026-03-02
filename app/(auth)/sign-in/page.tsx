@@ -10,7 +10,7 @@ import {signInEmail} from "better-auth/api";
 import {useRouter} from "next/navigation";
 
 const SignIn = () => {
-    const router = useRouter()
+    const router = useRouter();
     const {
         register,
         handleSubmit,
@@ -26,12 +26,13 @@ const SignIn = () => {
     const onSubmit = async (data: SignInFormData) => {
         try {
             const result = await signInWithEmail(data);
-            if(result.success) router.push('/');
-        } catch (e) {
+            if (result.success) router.push('/');
+        }
+        catch (e) {
             console.error(e);
             toast.error('Sign in failed', {
-                description: e instanceof Error ? e.message : 'Failed to sign in.'
-            })
+                description: e instanceof Error ? e.message : 'Failed to sign in'
+            });
         }
     }
 
