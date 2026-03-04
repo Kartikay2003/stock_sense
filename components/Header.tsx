@@ -8,7 +8,7 @@ const Header = ({ user }: { user: User }) => {
         <header className="sticky top-0 header">
             <div className="container header-wrapper">
                 <Link href="/">
-                    <Image src="/assets/icons/Stock_Sense_logo.png" alt="Stock Sense logo" width={140} height={32} className="h-14 w-auto max-w-50 cursor-pointer" />
+                    <Image src="/assets/icons/logo.svg" alt="Stock Sense logo" width={140} height={32} className="h-14 w-auto max-w-50 cursor-pointer" />
                     {/* cursor-pointer tailwind class - so its clickable */}
                 </Link>
                 <nav className="hidden sm:block">
