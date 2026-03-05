@@ -9,6 +9,7 @@ interface TradingViewWidgetProps {
     scriptUrl: string;
     config: Record<string, unknown>;
     height?: number;
+    width?: number;
     className?: string;
 }
 
