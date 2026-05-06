@@ -1,5 +1,4 @@
 import TradingViewWidget from "@/components/TradingViewWidget";
-import WatchlistButton from "@/components/WatchlistButton";
 import {
     SYMBOL_INFO_WIDGET_CONFIG,
     CANDLE_CHART_WIDGET_CONFIG,
@@ -8,10 +7,15 @@ import {
     COMPANY_PROFILE_WIDGET_CONFIG,
     COMPANY_FINANCIALS_WIDGET_CONFIG,
 } from "@/lib/constants";
+import WatchlistToggle from "@/components/shared/WatchlistToggle";
+import { getUserWatchlistSymbols } from "@/lib/actions/watchlist.actions";
 
 export default async function StockDetails({ params }: StockDetailsPageProps) {
     const { symbol } = await params;
     const scriptUrl = `https://s3.tradingview.com/external-embedding/embed-widget-`;
+
+    const watchlist = await getUserWatchlistSymbols();
+    const isWatched = watchlist.includes(symbol.toUpperCase());
 
     return (
         <div className="flex min-h-screen p-4 md:p-6 lg:p-8">
@@ -42,7 +46,12 @@ export default async function StockDetails({ params }: StockDetailsPageProps) {
                 {/* Right column */}
                 <div className="flex flex-col gap-6">
                     <div className="flex items-center justify-between">
-                        <WatchlistButton symbol={symbol.toUpperCase()} company={symbol.toUpperCase()} isInWatchlist={false} />
+                        {/* --- NEW CODE: Replaced the old static button with your new interactive toggle --- */}
+                        <WatchlistToggle
+                            symbol={symbol.toUpperCase()}
+                            initialIsWatched={isWatched}
+                            variant="button"
+                        />
                     </div>
 
                     <TradingViewWidget

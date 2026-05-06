@@ -3,10 +3,12 @@
 import { useEffect, useState } from "react"
 import { CommandDialog, CommandEmpty, CommandInput, CommandList } from "@/components/ui/command"
 import {Button} from "@/components/ui/button";
-import {Loader2,  TrendingUp} from "lucide-react";
+import {Loader2, TrendingUp} from "lucide-react";
 import Link from "next/link";
 import {searchStocks} from "@/lib/actions/finnhub.actions";
 import {useDebounce} from "@/hooks/useDebounce";
+
+import WatchlistToggle from "@/components/shared/WatchlistToggle";
 
 export default function SearchCommand({ renderAs = 'button', label = 'Add stock', initialStocks }: SearchCommandProps) {
     const [open, setOpen] = useState(false)
@@ -91,7 +93,7 @@ export default function SearchCommand({ renderAs = 'button', label = 'Add stock'
                                         className="search-item-link"
                                     >
                                         <TrendingUp className="h-4 w-4 text-gray-500" />
-                                        <div  className="flex-1">
+                                        <div className="flex-1">
                                             <div className="search-item-name">
                                                 {stock.name}
                                             </div>
@@ -99,7 +101,21 @@ export default function SearchCommand({ renderAs = 'button', label = 'Add stock'
                                                 {stock.symbol} | {stock.exchange } | {stock.type}
                                             </div>
                                         </div>
-                                        {/*<Star />*/}
+
+                                        <div
+                                            className="z-10"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                            }}
+                                        >
+                                            <WatchlistToggle
+                                                symbol={stock.symbol}
+                                                initialIsWatched={false}
+                                                variant="icon"
+                                            />
+                                        </div>
+
                                     </Link>
                                 </li>
                             ))}
