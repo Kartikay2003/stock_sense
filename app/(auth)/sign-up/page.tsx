@@ -1,17 +1,21 @@
 'use client'
-import {useForm} from "react-hook-form";
-import {Button} from "@/components/ui/button";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
 import InputField from "@/components/forms/InputField"
 import SelectField from "@/components/forms/SelectField";
-import {INVESTMENT_GOALS, PREFERRED_INDUSTRIES, RISK_TOLERANCE_OPTIONS} from "@/lib/constants";
-import {CountrySelectField} from "@/components/forms/CountrySelectField";
+import { INVESTMENT_GOALS, PREFERRED_INDUSTRIES, RISK_TOLERANCE_OPTIONS } from "@/lib/constants";
+import { CountrySelectField } from "@/components/forms/CountrySelectField";
 import FooterLink from "@/components/forms/FooterLink";
-import {signUpWithEmail} from "@/lib/actions/auth.actions";
-import {useRouter} from "next/navigation";
-import {toast} from "sonner";
+import { signUpWithEmail } from "@/lib/actions/auth.actions";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { Eye, EyeOff } from "lucide-react"; // Importing the icons
 
 const SignUp = () => {
     const router = useRouter();
+    const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+
     const {
         register,
         handleSubmit,
@@ -63,17 +67,38 @@ const SignUp = () => {
                     placeholder="kartikay252003@gmail.com"
                     register={register}
                     error={errors.email}
-                    validation={{ required: 'Email name is required', pattern: /^\w+@\w+\.\w+$/, message: 'Email address is required!' }}
+                    validation={{
+                        required: 'Email address is required',
+                        pattern: { value: /^\w+@\w+\.\w+$/, message: 'Invalid Email address!' }
+                    }}
                 />
-                <InputField
-                    name="password"
-                    label="Password"
-                    placeholder="Enter a strong password"
-                    type="password"
-                    register={register}
-                    error={errors.password}
-                    validation={{ required: 'Password is required', minLength:8 }}
-                />
+
+                {/* PASSWORD FIELD WITH EYE BUTTON */}
+                <div className="relative">
+                    <InputField
+                        name="password"
+                        label="Password"
+                        placeholder="Enter a strong password"
+                        type={showPassword ? "text" : "password"} // Dynamic type based on state
+                        register={register}
+                        error={errors.password}
+                        validation={{ required: 'Password is required' }} // Removed strict minLength
+                    />
+
+                    {/* The Eye Button */}
+                    <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-10 text-gray-400 hover:text-white transition-colors"
+                    >
+                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+
+                    {/* Disclaimer text for the user regarding backend rules */}
+                    <p className="text-xs text-gray-500 mt-2">
+                        * Note: To keep your account secure, your password must be at least 8 characters and contain a number and an uppercase letter.
+                    </p>
+                </div>
 
                 <CountrySelectField
                     name="country"
