@@ -1,16 +1,19 @@
 'use client';
 
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import InputField from '@/components/forms/InputField';
 import FooterLink from '@/components/forms/FooterLink';
-import {signInWithEmail, signUpWithEmail} from "@/lib/actions/auth.actions";
-import {toast} from "sonner";
-import {signInEmail} from "better-auth/api";
-import {useRouter} from "next/navigation";
+import { signInWithEmail } from "@/lib/actions/auth.actions";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
 
 const SignIn = () => {
     const router = useRouter();
+    const [showPassword, setShowPassword] = useState(false);
+
     const {
         register,
         handleSubmit,
@@ -51,21 +54,36 @@ const SignIn = () => {
                 <InputField
                     name="email"
                     label="Email"
-                    placeholder="kartikay252003@gmail.com"
+                    autoComplete="off"
                     register={register}
                     error={errors.email}
-                    validation={{ required: 'Email is required', pattern: /^\w+@\w+\.\w+$/ }}
+                    validation={{
+                        required: 'Email is required',
+                        pattern: {
+                            value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                            message: 'Invalid Email address!'
+                        }
+                    }}
                 />
 
-                <InputField
-                    name="password"
-                    label="Password"
-                    placeholder="Enter your password"
-                    type="password"
-                    register={register}
-                    error={errors.password}
-                    validation={{ required: 'Password is required', minLength: 8 }}
-                />
+                <div className="relative">
+                    <InputField
+                        name="password"
+                        label="Password"
+                        type={showPassword ? "text" : "password"}
+                        register={register}
+                        error={errors.password}
+                        validation={{ required: 'Password is required' }}
+                    />
+
+                    <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-10 text-gray-400 hover:text-white transition-colors"
+                    >
+                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                </div>
 
                 <Button type="submit" disabled={isSubmitting} className="yellow-btn w-full mt-5">
                     {isSubmitting ? 'Signing In' : 'Sign In'}
