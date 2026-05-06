@@ -10,11 +10,11 @@ import FooterLink from "@/components/forms/FooterLink";
 import { signUpWithEmail } from "@/lib/actions/auth.actions";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Eye, EyeOff } from "lucide-react"; // Importing the icons
+import { Eye, EyeOff } from "lucide-react";
 
 const SignUp = () => {
     const router = useRouter();
-    const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+    const [showPassword, setShowPassword] = useState(false);
 
     const {
         register,
@@ -56,7 +56,7 @@ const SignUp = () => {
                 <InputField
                     name="fullName"
                     label="Full Name"
-                    placeholder="Kartikay Singh"
+                    autoComplete="off"
                     register={register}
                     error={errors.fullName}
                     validation={{ required: 'Full name is required', minLength:2 }}
@@ -64,28 +64,29 @@ const SignUp = () => {
                 <InputField
                     name="email"
                     label="Email"
-                    placeholder="kartikay252003@gmail.com"
+                    autoComplete="off"
                     register={register}
                     error={errors.email}
                     validation={{
                         required: 'Email address is required',
-                        pattern: { value: /^\w+@\w+\.\w+$/, message: 'Invalid Email address!' }
+                        pattern: {
+                            value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                            message: 'Invalid Email address!'
+                        }
                     }}
                 />
 
-                {/* PASSWORD FIELD WITH EYE BUTTON */}
                 <div className="relative">
                     <InputField
                         name="password"
                         label="Password"
                         placeholder="Enter a strong password"
-                        type={showPassword ? "text" : "password"} // Dynamic type based on state
+                        type={showPassword ? "text" : "password"}
                         register={register}
                         error={errors.password}
-                        validation={{ required: 'Password is required' }} // Removed strict minLength
+                        validation={{ required: 'Password is required' }}
                     />
 
-                    {/* The Eye Button */}
                     <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
@@ -94,7 +95,6 @@ const SignUp = () => {
                         {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                     </button>
 
-                    {/* Disclaimer text for the user regarding backend rules */}
                     <p className="text-xs text-gray-500 mt-2">
                         * Note: To keep your account secure, your password must be at least 8 characters and contain a number and an uppercase letter.
                     </p>
